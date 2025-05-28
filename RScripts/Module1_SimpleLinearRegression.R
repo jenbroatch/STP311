@@ -1,5 +1,6 @@
 #Module 1
 #Simple Linear Regression 
+library(ggplot2)
 pulitzer <- read.csv("https://raw.githubusercontent.com/jenbroatch/STP311/master/DataSets/pulitzer.csv")
 head(pulitzer)
 
@@ -37,4 +38,8 @@ predicted_values <- predict(reg1, newdata = new_data)
 
 # Print the predicted values
 predicted_values
+
+# Correlation matrix 
+cor(pulitzer[,c('pctchg_circ','num_finals1990_2014')])
+
 
