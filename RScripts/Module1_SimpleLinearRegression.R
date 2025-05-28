@@ -1,5 +1,7 @@
 #Module 1
 #Simple Linear Regression 
+#Worked Example using Pulizer Prize data 
+# For details see:  https://fivethirtyeight.com/features/do-pulitzers-help-newspapers-keep-readers/ 
 library(ggplot2)
 pulitzer <- read.csv("https://raw.githubusercontent.com/jenbroatch/STP311/master/DataSets/pulitzer.csv")
 head(pulitzer)
