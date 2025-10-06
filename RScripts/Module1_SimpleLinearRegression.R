@@ -1,8 +1,34 @@
 #Module 1
 #Simple Linear Regression 
+library(ggplot2)
+
+#Module 1.5 Example 
+college<- read.csv("https://raw.githubusercontent.com/jenbroatch/STP311/master/DataSets/collegemajor538.csv")
+head(college) 
+plot(college$sharewomen_percent, college$median, xlab='Percent Women in Major (%)', 
+     ylab='Median Salary $', main = 'Median Salary vs. Percent Women in Major')
+
+ggplot(college, aes(x = sharewomen_percent, y = median)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  labs(title = "Median Salary vs. Percent Women in Major",
+       x = "Percent Women in Major (%)",
+       y = "Median Salary") +
+  theme_minimal()
+reg_college = lm(median ~ sharewomen_percent, data = college)
+summary(reg_college)
+
+# ANOVA table for the linear model
+anova_res <- anova(reg_college)   
+anova_res
+
+#Correlation
+cor_res <- cor.test(college$sharewomen_percent, college$median, method = "pearson")
+cor_res
+
 #Worked Example using Pulizer Prize data 
 # For details see:  https://fivethirtyeight.com/features/do-pulitzers-help-newspapers-keep-readers/ 
-library(ggplot2)
+
 pulitzer <- read.csv("https://raw.githubusercontent.com/jenbroatch/STP311/master/DataSets/pulitzer.csv")
 head(pulitzer)
 
