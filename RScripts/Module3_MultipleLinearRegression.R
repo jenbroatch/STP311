@@ -1,8 +1,9 @@
 #Module 3 
-#Multiple Linear Regression \
+#Multiple Linear Regression 
 
 
 library(Lock5Data)
+library(dplyr)
 View(SleepStudy) 
 reg1=lm(SleepStudy$DepressionScore~SleepStudy$PoorSleepQuality )
 
@@ -13,11 +14,60 @@ plot(reg1)
 
 reg2=lm(SleepStudy$DepressionScore~SleepStudy$PoorSleepQuality+SleepStudy$Stress )
 summary(reg2)
-
-
+reg3=lm(SleepStudy$DepressionScore~SleepStudy$PoorSleepQuality+SleepStudy$Stress 
+        + SleepStudy$PoorSleepQuality*SleepStudy$Stress)
+summary(reg3)
 ggplot(SleepStudy, aes(x=Stress, y=DepressionScore)) + geom_boxplot() +
   ggtitle("Distribution Depression Score by Stress Level")+
   xlab("Stress Level") 
+
+#Module 3.5 
+
+reg5=lm(SleepStudy$DepressionScore~SleepStudy$PoorSleepQuality*SleepStudy$AnxietyStatus)
+summary(reg5)
+
+reduced<-lm(SleepStudy$DepressionScore~SleepStudy$PoorSleepQuality+SleepStudy$AnxietyStatus)
+full <- lm(SleepStudy$DepressionScore~SleepStudy$PoorSleepQuality*SleepStudy$AnxietyStatus)
+
+anova_out<- anova(reduced, full)
+anova_out 
+
+library(flextable)
+
+anova_out %>%
+  flextable() %>%
+  autofit()
+
+reg4=lm(SleepStudy$DepressionScore~SleepStudy$PoorSleepQuality+SleepStudy$AnxietyStatus)
+summary(reg4)
+
+#Test significance of Anxiety Status
+reduced<-lm(SleepStudy$DepressionScore~SleepStudy$PoorSleepQuality)
+full <- lm(SleepStudy$DepressionScore~SleepStudy$PoorSleepQuality+SleepStudy$AnxietyStatus)
+anova_out<- anova(reduced, full)
+
+
+anova_out %>%
+  flextable() %>%
+  autofit()
+
+library(emmeans)
+pairs(emmeans(full, ~ AnxietyStatus))
+
+
+# Pairwise comparisons
+pairwise_out <- pairs(emmeans(full, ~ AnxietyStatus))
+pairwise_out
+
+# Convert to data frame
+pairwise_df <- as.data.frame(pairwise_out)
+pairwise_df %>%
+  flextable() %>%
+  autofit()
+
+library(car)
+vif(reg3)
+
 
 #R Version of SAS Learning Lab
 # See https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/.
