@@ -34,8 +34,10 @@ prostate$residual  <- residuals(fit, type = "deviance")
 head(prostate)
 
 # ROC curve (like OUTROC=roc in SAS)
+library(pROC)
 roc_obj <- roc(prostate$nodalinv, prostate$predicted, ci = TRUE)
 plot(roc_obj, main = "ROC Curve for NODALINV Logistic Model")
+auc(roc_obj)
 
 # Classification table (like ctable option in SAS)
 threshold <- 0.5
